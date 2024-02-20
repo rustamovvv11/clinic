@@ -1,94 +1,27 @@
 <?php
 
-use App\Models\Doctor;
-use App\Models\Patient;
-use Illuminate\Http\Request;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\PatientController;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('welcome', ['patients' => Patient::all(), 'doctors' => Doctor::all()]);
-});
+Route::get('/', [PatientController::class, 'view_patients']);
 
+Route::post('/save_patient', [PatientController::class, 'create_patient']);
 
-Route::post('/save_patient', function (Request $request) {
+Route::get('/delete_patient/{id}', [PatientController::class, 'destroy']);
 
-    Patient::create([
-        'name' => $request->name,
-        'birth_date' => $request->birth_date,
-        'phone' => $request->phone,
-        'disease' => $request->disease,
-        'room' => $request->room,
-        'date' => $request->date,
-        'doctor_id' => $request->doctor
-    ]);
+Route::get('/edit_patient/{id}', [PatientController::class, 'view_edit_patient']);
 
-    return back();
-});
+Route::post('/update_patient/{id}', [PatientController::class, 'save_edit_patient']);
 
-Route::get('/delete_patient/{id}', function ($id) {
+Route::get('/doctors', [DoctorController::class,'view_doctors']);
 
-    Patient::where('id', '=', $id)->first()->delete();
+Route::post('/save_doctor', [DoctorController::class,'create_doctor']);
 
-    return back();
-});
+Route::get('/delete_doctor/{id}', [DoctorController::class,'destroy']);
 
+Route::get('/edit_doctor/{id}', [DoctorController::class,'view_edit_doctor']);
 
-Route::get('/edit_patient/{id}', function ($id) {
-
-    return view('edit-patient', ['patient' => Patient::where('id', '=', $id)->first()]);
-});
-
-Route::post('/update_patient/{id}', function (Request $req, $id) {
-    Patient::where('id', '=', $id)->first()->update([
-        'name' => $req->name,
-        'birth_date' => $req->birth_date,
-        'phone' => $req->phone,
-        'disease' => $req->disease,
-        'room' => $req->room,
-        'date' => $req->date
-    ]);
-
-    return redirect('/');
-});
-
-
-Route::get('/doctors', function () {
-    return view('doctors', ['doctors' => Doctor::all()]);
-});
-
-
-Route::post('/save_doctor', function (Request $request) {
-
-    Doctor::create([
-        'full_name' => $request->full_name,
-        'birth_date' => $request->birth_date,
-        'experience' => $request->experience
-    ]);
-
-    return back();
-});
-
-Route::get('/delete_doctor/{id}', function ($id) {
-
-    Doctor::where('id', '=', $id)->first()->delete();
-
-    return back();
-});
-
-
-Route::get('/edit_doctor/{id}', function ($id) {
-
-    return view('edit-doctor', ['doctor' => Doctor::where('id', '=', $id)->first()]);
-});
-
-Route::post('/update_doctor/{id}', function (Request $req, $id) {
-    Doctor::where('id', '=', $id)->first()->update([
-        'full_name' => $req->full_name,
-        'birth_date' => $req->birth_date,
-        'experience' => $req->experience
-    ]);
-
-    return redirect('/doctors');
-});
+Route::post('/update_doctor/{id}', [DoctorController::class,'update_doctor']);
