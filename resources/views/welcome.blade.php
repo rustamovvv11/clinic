@@ -26,7 +26,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form action="/save_patient" method="POST">
+                <form action="/save_patient" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -71,6 +71,12 @@
                             <input type="date" class="form-control" id="date" placeholder="Enter date"
                                 name="date">
                         </div>
+
+                        <div class="form-group">
+                            <label for="photo">Photo:</label>
+                            <input type="file" class="form-control" id="photo" placeholder="Enter photo"
+                                name="photo">
+                        </div>
                     </div>
 
                     <!-- Modal footer -->
@@ -94,6 +100,7 @@
             <th>Name</th>
             <th>Birth_date</th>
             <th>Disease</th>
+            <th>Photo</th>
             <th>Doctor</th>
             <th>Action</th>
         </tr>
@@ -104,7 +111,12 @@
                 <td>{{ $pt->name }}</td>
                 <td>{{ $pt->birth_date }}</td>
                 <td>{{ $pt->disease }}</td>
-                <td>{{ $pt->get_doctor->full_name }}</td>
+                <td>
+                    @if ($pt->photo)
+                        <img src="{{ $pt->photo }}" width="40px" height="40px">
+                    @endif
+                </td>
+                <td>{{ $pt->get_doctor->full_name }} ( {{ $pt->get_doctor->experience }} г. опыта )</td>
                 <td>
                     <a href="/delete_patient/{{ $pt->id }}" class="btn btn-outline-danger">Delete</a>
                     <a href="/edit_patient/{{ $pt->id }}" class="btn btn-outline-info">Edit</a>

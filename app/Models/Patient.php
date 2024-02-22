@@ -18,7 +18,8 @@ class Patient extends Model
         'disease',
         'room',
         'date',
-        'doctor_id'
+        'doctor_id',
+        'photo'
     ];
 
     public $timestamps = false;
