@@ -22,7 +22,6 @@ class Patient extends Model
         'photo'
     ];
 
-    public $timestamps = false;
 
     function get_doctor()
     {

@@ -17,5 +17,4 @@ class Doctor extends Model
         'experience'
     ];
 
-    public $timestamps = false;
 }
